@@ -17,6 +17,7 @@
 // main.ts imports its own server and nothing else: no package, no Node built-in, no model call.
 
 import { createApp } from './app.ts';
+import { closeServer } from './server-lifecycle.ts';
 
 const ENV_URL = (process.env.MAKEFUN_ENV_URL ?? '').replace(/\/+$/, '');
 if (ENV_URL === '') {
@@ -91,7 +92,7 @@ async function main(): Promise<void> {
   process.stdout.write('[entry] registered; waiting for the env to say done\n');
 
   await waitForDone();
-  server.close();
+  await closeServer(server);
   process.stdout.write('[entry] done\n');
 }
 
